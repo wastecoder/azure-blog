@@ -91,12 +91,30 @@
                         '<p class="text-muted">Nenhum comentário ainda.</p>';
                 } else {
                     comments.forEach(comment => {
-                    const commentItem = document.createElement('div');
-                    commentItem.className = "list-group-item";
-                    commentItem.textContent = comment.text;
-                    commentsContainer.appendChild(commentItem);
+                        const commentItem = document.createElement('div');
+                        commentItem.className = "list-group-item d-flex justify-content-between align-items-center";
+                        commentItem.textContent = comment.text;
+
+                        // Botão de excluir comentário
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = "btn btn-sm btn-outline-danger";
+                        deleteBtn.textContent = "Excluir";
+                        deleteBtn.onclick = function() {
+                            deleteComment(comment.id);
+                        };
+
+                        commentItem.appendChild(deleteBtn);
+                        commentsContainer.appendChild(commentItem);
                     });
                 }
+            }
+
+            // Exclui um comentário
+            function deleteComment(commentId) {
+                const comments = getComments();
+                const updatedComments = comments.filter(comment => comment.id !== commentId);
+                saveComments(updatedComments);
+                renderComments();  // Atualiza a lista de comentários
             }
 
             // Adiciona um novo comentário
